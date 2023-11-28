@@ -40,6 +40,23 @@ class Crud_model extends CI_Model
         // $prev_data = $this->getById($id);
         $this->db->update("tasks", $data);
     }
+
+    public function delete($id)
+    {
+        $this->db->where("id", $id);
+        $result = $this->db->delete("tasks");
+
+        if($result)
+            {
+                $this->session->set_flashdata("Deleted", "Successfully Done Task");
+            }
+            else
+            {
+                $this->session->set_flashdata("Not Deleted","Some Issue Occurred In Data Insertion");
+            }
+
+        
+    }
 }
 
 
