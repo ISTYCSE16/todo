@@ -20,7 +20,7 @@
             <div class="clear-fix">
                 <h3 style="float: left">Tasks</h3>
                 <!--  -->
-                <button @click="showModal = true" style="float: right" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">Add Task</button>
+                <button style="float: right" @click="showModal = true" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">Add Task</button>
                 <!-- <button @click="toggleModal" style="float: right" class="btn btn-success">Add Task</button> -->
             </div>
             <table class="table table-striped table-hover">
@@ -36,7 +36,7 @@
                       <td>{{ data.task_type }}</td>
                       <td>{{ data.required_time }}</td>
                       <td>
-                        <button class="btn btn-success" @click="editTask(data.id)">Edit Task</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal" @click="editTask(data.id)">Edit Task</button>
                         <button class="btn btn-danger" @click="deleteTask(data.id)">Task Done</button>
                       </td>
                     </tr>
@@ -46,37 +46,70 @@
             </table>
 
         </div>
-    </div>
 
-    <div class="modal" v-if="showModal" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Task</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div>
-                <label>Task</label>
-                <input type="text" v-model="newTask.task" placeholder="Write The Task">
+      <div class="modal" v-if="showModal" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Task</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div>
-                <label>Task Type</label>
-                <input type="text" v-model="newTask.task_type" placeholder="Write The Task Type">
+              <div class="modal-body">
+                <div>
+                  <label>Task</label>
+                  <input type="text" v-model="newTask.task" placeholder="Write The Task">
+                </div>
+                <div>
+                  <label>Task Type</label>
+                  <input type="text" v-model="newTask.task_type" placeholder="Write The Task Type">
+                </div>
+                <div>
+                  <label>Hour(s) Required</label>
+                  <input type="text" v-model="newTask.required_time" placeholder="Write The Hour(s) Required">
+                </div>
               </div>
-              <div>
-                <label>Hour(s) Required</label>
-                <input type="text" v-model="newTask.required_time" placeholder="Write The Hour(s) Required">
+              <div class="modal-footer">
+                <!-- <button type="button" class="btn-close" @click="closeModal" aria-label="Close"></button> -->
+                <button type="button" class="btn btn-info" @click="addTask">Add Task</button>
               </div>
-            </div>
-            <div class="modal-footer">
-              <!-- <button type="button" class="btn-close" @click="closeModal" aria-label="Close"></button> -->
-              <button type="button" class="btn btn-info" @click="addTask">Add Task</button>
-            </div>
-          
+            
+          </div>
         </div>
       </div>
+
+      <div class="modal" v-if="showModal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Task</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div>
+                  <label>Task</label>
+                  <input type="text" v-model="newTask.task" placeholder="Write The Task">
+                </div>
+                <div>
+                  <label>Task Type</label>
+                  <input type="text" v-model="newTask.task_type" placeholder="Write The Task Type">
+                </div>
+                <div>
+                  <label>Hour(s) Required</label>
+                  <input type="text" v-model="newTask.required_time" placeholder="Write The Hour(s) Required">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <!-- <button type="button" class="btn-close" @click="closeModal" aria-label="Close"></button> -->
+                <button type="button" class="btn btn-info" @click="addTask">Add Task</button>
+              </div>
+            
+          </div>
+        </div>
+      </div>
+
     </div>
+
+    
 
         <!-- <div class="modal" v-if="showModal">
             <form @submit.prevent="addTask">

@@ -31,9 +31,6 @@ const app = Vue.createApp({
                 .catch(error => console.error('Error:', error));
         },
         addTask() {
-            alert("Add Task");
-            console.log("triggered Add Task");
-            console.log(this.newTask);
             fetch('http://localhost/todo/index.php/crud/addTask', {
                 method: 'POST',
                 headers: {
