@@ -15,75 +15,50 @@ class Crud extends CI_Controller
         //     ->set_content_type('application/json')
         //     ->set_output(json_encode(['task_data' => $data['task_data']]));
         // $this->load->view("crud_view");
-        
-        $this->load->view("crud_view");
-        // Get all data from the model
-        
+          
 
-        // 
+        $this->load->view("crud_view");
+
+        
     }
 
     public function fetchData() {
         $data['task_data'] = $this->Crud_model->getAllData();
 
-        // Send JSON response
+        // // Send JSON response
         header('Content-Type: application/json');
         echo json_encode(['task_data' => $data['task_data']]);
     }
     public function addTask()
     {
+        
         $postData = json_decode(file_get_contents('php://input'), true);
 
         $this->form_validation->set_data($postData);
-        $this->form_validation->set_rules("task","Task","trim|required");
-        $this->form_validation->set_rules("type","Task Type","trim|required");
-        $this->form_validation->set_rules("hour","Hour(s) Required","");
+        $this->form_validation->set_rules("task", "Task", "trim|required");
+        $this->form_validation->set_rules("task_type", "Task Type", "trim|required");
+        $this->form_validation->set_rules("required_time", "Hour(s) Required", "");
 
-        if ($this->form_validation->run() == FALSE)
-        {
-            // $data_error = [
-
-            //     "error"=> validation_errors()
-
-            // ];
-
-            // $this->session->set_flashdata($data_error);
-
+        if ($this->form_validation->run() == FALSE) {
             header("Content-Type: application/json");
-            echo json_encode(array("error"=> validation_errors()));
-        }
-
-        else 
-        {
+            echo json_encode(array("error" => validation_errors()));
+        } else {
             $result = $this->Crud_model->insertTask([
-
-                // "task" => $this->input->post("task"),
-                // "task_type" => $this->input->post("type"),
-                // "required_time" => $this->input->post("hour")
                 "task" => $postData["task"],
                 "task_type" => $postData["task_type"],
-                "required_time" => $postData["hour"],
+                "required_time" => $postData["required_time"],
             ]);
-
-            // if($result)
-            // {
-            //     $this->session->set_flashdata("Inserted", "Successfully Inserted Data To Database");
-            // }
-            // else
-            // {
-            //     $this->session->set_flashdata("Not Inserted","Some Issue Occurred In Data Insertion");
-            // }
 
             header('Content-Type: application/json');
             echo json_encode($result ? ['message' => 'Successfully Inserted Data To Database'] : ['error' => 'Some Issue Occurred In Data Insertion']);
         }
 
-        redirect("crud");
     }
 
     public function editTask($id)
     {
         $task = $this->Crud_model->getById($id);
+        $this->load->view('edit_view', $task);
         header('Content-Type: application/json');
         echo json_encode($task);
     }
@@ -114,7 +89,7 @@ class Crud extends CI_Controller
 
     public function deleteTask($id)
     {
-        $result = $this->Crud_model->deleteTask($id);
+        $result = $this->Crud_model->delete($id);
 
         header('Content-Type: application/json');
         echo json_encode($result ? ['message' => 'Successfully Deleted Task'] : ['error' => 'Some Issue Occurred In Data Deletion']);

@@ -7,22 +7,22 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="jambotron">
+    <div id="app" class="jumbotron">
         <h1 align="center">Edit Tasks</h1>
         <div class="container">
-            <form action="<?php echo base_url()?>index.php/crud/updateTask/<?php echo $task_data->id?>" method="post">
+            <form @submit.prevent="editTask" v-if="task_data">
                 <div class="form-group">
                     <div class="form-group">
                         <label for="task">Edit Task Name</label>
-                        <input type="text" name="task" placeholder=<?php echo $task_data->task?> class="form-control">
+                        <input type="text" v-model="editedTask.task" placeholder="{{ task_data.task }}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="type">Edit Task Type</label>
-                        <input type="text" name="type" placeholder=<?php echo $task_data->task_type?> class="form-control">
+                        <input type="text" v-model="editedTask.task_type" placeholder="{{ task_data.task_type }}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="hour">Edit Time Required</label>
-                        <input type="text" name="hour" placeholder=<?php echo $task_data->required_time?> class="form-control">
+                        <input type="text" v-model="editedTask.required_time" placeholder="{{ task_data.required_time }}" class="form-control">
                     </div>
                     
                     <input type="submit" name="edit" value="Edit Done" class="btn btn-info">
@@ -30,6 +30,8 @@
             </form>
         </div>
     </div>
+
+    <script src="<?php echo base_url();?>assets/js/app.js"></script>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

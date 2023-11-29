@@ -16,27 +16,41 @@ const app = Vue.createApp({
             },
         };
     },
+    // created(){
+    //     this.fetchData(); 
+    //   },
     methods: {
         fetchData() {
             fetch('http://localhost/todo/index.php/crud/fetchData')
                 .then(response => response.json())
                 .then(data => {
                     this.taskData = data.task_data;
+                    // this.loadView()
+                    console.log(this.taskData);
                 })
                 .catch(error => console.error('Error:', error));
         },
         addTask() {
+            alert("Add Task");
+            console.log("triggered Add Task");
+            console.log(this.newTask);
             fetch('http://localhost/todo/index.php/crud/addTask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(this.newTask),
+                body: JSON.stringify({
+                    task: this.newTask.task,
+                    task_type: this.newTask.task_type,
+                    required_time: this.newTask.required_time
+                }),
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.result) {
+                    console.log(data)
+                    if (data.message === "Successfully Inserted Data To Database") {
                         this.showModal = false;
+                        console.log(this.newTask.task, this.newTask.task_type, this.newTask.required_time);
                         this.fetchData();
                     } else {
                         console.error('Error adding task');
@@ -61,10 +75,15 @@ const app = Vue.createApp({
             fetch(`http://localhost/todo/index.php/crud/deleteTask/${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.result) {
+                    console.log(data);
+                    if (data.message === 'Successfully Deleted Task') {
                         this.fetchData();
+                        // this.loadView();
+                        // window.location.reload(true);
+                        console.log(data);
                     } else {
                         console.error('Error deleting task');
+                        console.log(data);
                     }
                 })
                 .catch(error => console.error('Error:', error));
@@ -82,15 +101,25 @@ const app = Vue.createApp({
                     if (data.result) {
                         this.showModal = false;
                         this.fetchData();
+                        // this.loadView()
                     } else {
                         console.error('Error updating task');
                     }
                 })
                 .catch(error => console.error('Error:', error));
         },
-        closeModal() {
-            this.showModal = false;
-        },
+        // modalPopUp() {
+        //     this.showModal = true
+        //     console.log(showModal)
+        // },
+        // closeModal() {
+        //     this.showModal = false
+        //     console.log(showModal)
+        // },
+        toggleModal() {
+            this.showModal = !this.showModal
+            console.log(this.showModal)
+        }
     },
     mounted() {
         this.fetchData();
